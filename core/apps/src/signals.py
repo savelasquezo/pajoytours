@@ -1,1 +1,1 @@
-from apps.src.models import Lottery, TicketsLottery, HistoryLottery
+from apps.src.models import Lottery, TicketsLottery

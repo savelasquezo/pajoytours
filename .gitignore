@@ -57,8 +57,6 @@ MANIFEST
 **/package-lock.json
 package-lock.json
 
-!lib/types/next-auth.d.ts
-
 robots.txt
 sitemap-0.xml
 sitemap.xml
@@ -197,8 +195,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-
-!/lib/types/next-env.d.ts
 
 public/.next/
 next-sitemap.config.js

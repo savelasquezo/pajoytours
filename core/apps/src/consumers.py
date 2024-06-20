@@ -3,48 +3,47 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 
 @sync_to_async
-def getAsyncGiveaway(id):
+def getAsyncLottery(lottery):
     from apps.src.models import Lottery
-    return Giveaway.objects.get(pk=id)
+    return Lottery.objects.get(lottery=lottery)
 
 @sync_to_async
-def getAsyncTickets(giveaway):
-    from apps.giveaway.models import TicketsGiveaway
-    return list(TicketsGiveaway.objects.filter(giveaway=giveaway).values_list('ticket', flat=True))
+def getAsyncTickets(lottery):
+    from apps.src.models import TicketsLottery
+    return list(TicketsLottery.objects.filter(lottery=lottery).values_list('ticket', flat=True))
 
 @sync_to_async
-def getAsyncsSerializersGiveaway(giveaway):
-    from.serializers import GiveawaySerializer
-    serializer = GiveawaySerializer(giveaway)
+def getAsyncsSerializersLottery(lottery):
+    from.serializers import LotterySerializer
+    serializer = LotterySerializer(lottery)
     return serializer
 
-async def getAsyncAviableTickets(id):
-    giveaway = await getAsyncGiveaway(id)
-    getAviableTickets = [str(i).zfill(len(str(giveaway.tickets))) for i in range((giveaway.tickets+1))]
-    getTickets = await getAsyncTickets(giveaway)
+async def getAsyncAviableTickets(lottery):
+    lottery = await getAsyncLottery(lottery)
+    getAviableTickets = [str(i).zfill(len(str(lottery.tickets))) for i in range((lottery.tickets+1))]
+    getTickets = await getAsyncTickets(lottery)
     tickets = [i for i in getAviableTickets if i not in getTickets]
 
-    serializer = await getAsyncsSerializersGiveaway(giveaway)
+    serializer = await getAsyncsSerializersLottery(lottery)
 
-    return {'giveaway':serializer.data,'tickets': tickets}
+    return {'lottery':serializer.data,'tickets': tickets}
 
 
-class AsyncGiveawayConsumer(AsyncWebsocketConsumer):
+class AsyncLotteryConsumer(AsyncWebsocketConsumer):
 
-    async def asyncTicketsGiveaway(self):
-        idGiveaway = self.scope['url_route']['kwargs']['id']
-        data = await getAsyncAviableTickets(id=idGiveaway)
+    async def asyncTicketsLottery(self):
+        data = await getAsyncAviableTickets(lottery=self.scope['url_route']['kwargs']['lottery'])
         return data
 
     async def connect(self):
-        self.group_name = "groupTicketsGiveaway"
+        self.group_name = "groupTicketsLottery"
         await self.channel_layer.group_add(
             self.group_name,
             self.channel_name
         )
         await self.accept()
 
-        data = await self.asyncTicketsGiveaway()
+        data = await self.asyncTicketsLottery()
         await self.send(json.dumps(data))
 
     async def disconnect(self, close_code):

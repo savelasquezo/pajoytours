@@ -23,4 +23,6 @@ urlpatterns = [
     path("app/admin/", admin.site.urls),
     path("app/auth/", include("djoser.urls")),
     path("app/auth/", include("djoser.urls.jwt")),
+    path("app/v1/src/", include("apps.src.urls")),
+    path("app/v1/core/", include("apps.core.urls"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

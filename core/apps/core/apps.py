@@ -1,10 +1,10 @@
 from django.apps import AppConfig
 
 
-class AuthConfig(AppConfig):
+class CoreConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.auth'
-    verbose_name = 'Accounts'
+    name = 'apps.core'
+    verbose_name = ''
 
     def ready(self):
         from . import signals

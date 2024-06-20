@@ -74,7 +74,7 @@ THIRD_APPS = [
 ]
 
 CORE_APPS = [
-    'apps.auth',
+    'apps.core',
     'apps.src'
 ]
 
@@ -151,10 +151,13 @@ CHANNEL_LAYERS = {
 }
 
 REST_FRAMEWORK = {
-   'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
        'rest_framework_simplejwt.authentication.JWTAuthentication',
-   ),
+    ),
 }
+
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
@@ -176,18 +179,10 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
 # Djoser
@@ -205,17 +200,17 @@ DJOSER = {
     "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
     "ACTIVATION_URL": "?auth=True&uid={uid}&token={token}",
     "SERIALIZERS": {
-        "user_create": "apps.auth.serializers.AccountSerializer",
-        "user": "apps.auth.serializers.AccountSerializer",
-        "current_user": "apps.auth.serializers.AccountSerializer",
+        "user_create": "apps.core.serializers.AccountSerializer",
+        "user": "apps.core.serializers.AccountSerializer",
+        "current_user": "apps.core.serializers.AccountSerializer",
         "user_delete": "djoser.serializers.UserDeleteSerializer",
-        "password_reset_confirm": "apps.auth.serializers.AccountPasswordResetConfirmSerializer",
+        "password_reset_confirm": "apps.core.serializers.AccountPasswordResetConfirmSerializer",
     },
     "TEMPLATES": {
-        "activation": "email/activation.html",
-        "confirmation": "email/confirmation.html",
-        "password_reset": "email/password_reset.html",
-        "password_changed_confirmation": "email/password_changed_confirmation.html",
+        "activation": "auth/activation.html",
+        "confirmation": "auth/confirmation.html",
+        "password_reset": "auth/password_reset.html",
+        "password_changed_confirmation": "auth/password_changed_confirmation.html",
     },
 }
 
@@ -245,7 +240,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-AUTH_USER_MODEL = "apps.auth.Account"
+AUTH_USER_MODEL = "core.Account"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800

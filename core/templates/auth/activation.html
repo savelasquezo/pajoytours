@@ -1,0 +1,22 @@
+{% block subject %}
+{{ site_name }} - Account Activation
+{% endblock subject %}
+
+{% block text_body %}
+You're receiving this email because you need to finish the activation process on {{ site_name }}.
+Please go to the following page to activate your account:
+
+{{ protocol }}://{{ domain }}/{{ url|safe }}
+
+"Thanks for using our site!"
+{% endblock text_body %}
+
+
+{% block html_body %}
+<p>You're receiving this email because you need to finish the activation process on {{ site_name }}.</p>
+<p>Please go to the following page to activate your account:</p>
+
+<p><a href="{{ protocol }}://{{ domain }}/{{ url|safe }}">{{ protocol }}://{{ domain }}/{{ url|safe }}</a></p>
+
+<p>"Thanks for using our site!"</p>
+{% endblock html_body %}
