@@ -1,11 +1,8 @@
-from django.urls import path, re_path
+from django.urls import path
 import apps.src.views as view
 
 urlpatterns = [
-    path('fetch-tours', view.fetchTours.as_view(), name='fetch-tours'),
-    path('fetch-lottery/', view.fetchLottery.as_view(), name='fetch-lottery'),
-    path('fetch-all-lottery-tickets/', view.fetchAllTicketsLottery.as_view(), name='fetch-all-lottery-tickets'),
-    path('request-ticketlottery/', view.requestTicketLottery.as_view(), name='request-ticketlottery'),
-    re_path(r'fetch-lottery-tickets/(?P<lotteryID>\d+)', view.fetchTicketsLottery.as_view(), name='fetch-lottery-tickets'),
+    path('fetch-invoices/', view.fetchInvoices.as_view(), name='fetch-invoices'),
+    path('request-invoice/', view.requestInvoice.as_view(), name='request-invoice'),
+    path('notify-invoice-bold/', view.notifyInvoiceBold.as_view(), name='notify-invoice-bold'),
 ]
-

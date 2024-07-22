@@ -1,15 +1,8 @@
 import uuid
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
-states = (('pending','Pending'),('done','Done'),('error','Error'))
-methods = (('fiat','Fiat'),('bold','Bold'))
-
-def ImageUploadTo(instance, id):
-    return f"uploads/files/{id}"
 
 class AccountManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -29,8 +22,8 @@ class AccountManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class Account(AbstractBaseUser, PermissionsMixin):
-    id = models.UUIDField(_("ID"),default=uuid.uuid4, unique=True, primary_key=True)
+class Accounts(AbstractBaseUser, PermissionsMixin):
+    uuid = models.UUIDField(_("ID"),default=uuid.uuid4, unique=True)
     email = models.EmailField(_("Email"),unique=True)
     phone = models.CharField(_("Telefono"),max_length=64, unique=True, null=False, blank=False)
     location = models.CharField(_("Ubicacion"),max_length=256, null=True, blank=True)
@@ -54,59 +47,3 @@ class Account(AbstractBaseUser, PermissionsMixin):
         indexes = [models.Index(fields=['email']),]
         verbose_name = _("Account")
         verbose_name_plural = _("Accounts")
-
-
-class Invoice(models.Model):
-    id = models.UUIDField(_("ID"),default=uuid.uuid4, unique=True, primary_key=True)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    amount = models.FloatField(_("Ammount"),blank=False,null=False,default=0, help_text=_("Ammount of Invoice (COP)"),)
-    date = models.DateField(_("Date"), default=timezone.now)
-    method = models.CharField(_("Method"), choices=methods, max_length=128, null=False, blank=False)
-    voucher = models.CharField(_("Voucher"), max_length=128, null=False, blank=False)
-    state = models.CharField(verbose_name='',choices=states, default="pending", max_length=16)
-
-    def save(self, *args, **kwargs):
-        if not self.uuid:
-            self.uuid = str(uuid.uuid4())[:12]
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.voucher}"
-
-    class Meta:
-        indexes = [models.Index(fields=['account','voucher']),]
-        verbose_name = _("Invoice")
-        verbose_name_plural = _("Invoices")
-
-
-class Settings(models.Model):
-    default = models.CharField(_("Settings"), max_length=32, unique=True, blank=True, null=True, default="Settings")
-
-    nit = models.CharField(_("NIT"), max_length=64, blank=True, null=True)
-    phone = models.CharField(_("Telefono"), max_length=64, blank=True, null=True)
-    email = models.EmailField(_("Correo"), max_length=254, blank=True, null=True)
-    address = models.CharField(_("Address"), max_length=64, blank=True, null=True)
-
-    twitter = models.URLField(_("Twitter"), max_length=128, blank=True, null=True)
-    facebook = models.URLField(_("Facebook"), max_length=128, blank=True, null=True)
-    instagram = models.URLField(_("Instagram"), max_length=128, blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.default}"
-
-    class Meta:
-        verbose_name = _("Setting")
-        verbose_name_plural = _("Settings")
-
-
-class ImagenSlider(models.Model):
-    settings = models.ForeignKey(Settings, on_delete=models.CASCADE)
-    file = models.ImageField(_("Imagen"), upload_to=ImageUploadTo, max_length=32, null=True, blank=True,
-                                help_text="Width-(1340px) - Height-(500px)")
-
-    def __str__(self):
-        return f"{self.id}"
-
-    class Meta:
-        verbose_name = _("Image")
-        verbose_name_plural = _("Images")

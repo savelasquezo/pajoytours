@@ -1,1 +1,1 @@
-from apps.core.models import Account
+import apps.core.models as model

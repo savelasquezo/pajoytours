@@ -160,7 +160,7 @@ const RegisterModal: React.FC<ModalFunction> = ({ closeModal }) => {
                     />
                 </div>
                 <div className="inline-flex items-start gap-x-2 my-1 md:my-2">
-                    <input type="checkbox" id="checkbox"onChange={toggleAgreed} readOnly={registrationSuccess}/>
+                    <input type="checkbox" id="checkbox" onChange={toggleAgreed} readOnly={registrationSuccess}/>
                     <p className="text-[0.45rem] md:text-[0.55rem] text-gray-300">Confirmo que tengo 18 años y que he leído y aceptado todos los Términos del servicio y Tratamiento de datos.</p>
                 </div>
                 {registrationSuccess ? (
@@ -185,7 +185,7 @@ const RegisterModal: React.FC<ModalFunction> = ({ closeModal }) => {
             </form>
             { success && (<div className="text-lime-400 text-xs md:text-sm mt-0 md:mt-2">{success}</div>)}
             { error && (<div className="text-red-400 text-xs md:text-sm mt-0 md:mt-2">{error}</div>)}
-            { !error && !success && (<div className="text-gray-400 text-xs mt-0 md:mt-2 h-6">¿Necesitas ayuda? support@zoexbet.com</div>)}
+            { !error && !success && (<div className="text-gray-400 text-xs mt-0 md:mt-2 h-6">¿Necesitas ayuda? support@pajoytours.com</div>)}
         </div>
     );
 };

@@ -2,7 +2,20 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.conf.locale.es import formats as es_formats
 
-from apps.core.models import Account, Invoice, ImagenSlider, Settings
+from apps.src.admin import InvoiceInline
+import apps.core.models as model
+
+from apps.site.admin import InformationAdmin
+from apps.site.models import Informations
+from apps.site.admin import InformationAdmin
+from apps.site.models import Informations
+from apps.src.admin import InvoiceAdmin
+from apps.src.models import Invoices
+from apps.mail.admin import MarketingAdmin, EmailAdmin
+from apps.mail.models import Marketing, Emails
+from apps.manager.admin import ToursAdmin, LotteriAdmin, ScheduleAdmin, AdvertisementAdmin
+from apps.manager.models import Tour, Lotteri, Schedule, Advertisement
+
 
 class MyAdminSite(admin.AdminSite):
     index_title = 'Consola Administrativa'
@@ -13,7 +26,7 @@ class MyAdminSite(admin.AdminSite):
         Return a sorted list of all the installed apps that have been
         registered in this site. NewMetod for ordering Models
         """
-        ordering = {"Accounts": 1, "Invoices":2, "Tours": 3, "Lotterys": 4, "Settings": 5}
+        ordering = {"Accounts": 1, "Invoices":2, "Tours": 3, "Lotteries": 4, "Schedules": 5, "Advertisements":6, "Marketing": 8, "Emails": 8, "Information": 9}
         app_dict = self._build_app_dict(request, app_label)
 
         app_list = sorted(app_dict.values(), key=lambda x: x["name"].lower())
@@ -27,69 +40,12 @@ admin_site = MyAdminSite()
 admin.site = admin_site
 admin_site.site_header = "Pajoytours"
 
-class InvoiceInline(admin.StackedInline):
-    
-    model = Invoice
-    extra = 0
-
-    fieldsets = (
-        (" ", {"fields": (
-            ('method','state'),
-            ('amount','date','voucher'),
-                )
-            }
-        ),
-    )
-
-    radio_fields = {'state': admin.HORIZONTAL}
-    readonly_fields = ('method','amount','date','voucher')
-
-    def has_add_permission(self, request, obj=None):
-        return False
-
-
-class InvoiceAdmin(admin.ModelAdmin):
-    list_display = (
-        'voucher',
-        'account',
-        'amount',
-        'date',
-        'state'
-        )
-
-    list_filter = ['date','state']
-    search_fields = ['account','voucher']
-
-    radio_fields = {'state': admin.HORIZONTAL}
-    es_formats.DATETIME_FORMAT = "d M Y"
-    
-    fieldsets = (
-        (None, {'fields': (
-            ('account','method','state'),
-            ('amount','date','voucher'),
-        )}),
-    )
-
-    def get_fieldsets(self, request, obj=None):
-        fieldsets = super().get_fieldsets(request, obj)
-        self.inlines = []
-        return fieldsets
-
-    def has_add_permission(self, request):
-         return False
-
-    def get_readonly_fields(self, request, obj=None):
-        if obj and obj.state == "done":
-            return [field.name for field in self.model._meta.fields]
-        return ['account','method','amount','date','voucher']
-
 
 class AccountAdmin(BaseUserAdmin):
     list_display = (
         'email',
         'phone'
     )
-
 
     search_fields = ('email','phone')
 
@@ -98,7 +54,7 @@ class AccountAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': (('email','is_active'), 'password')}),
             ('', {'fields': (
-            ('phone','location'),
+            ('phone','location','balance'),
         )}),
     )
 
@@ -119,52 +75,12 @@ class AccountAdmin(BaseUserAdmin):
     def get_readonly_fields(self, request, obj=None):
         return ['email']
 
-
-class ImagenSliderInline(admin.StackedInline):
-    
-    model = ImagenSlider
-    extra = 0
-    fieldsets = ((" ", {"fields": (("file",),)}),)
-
-class SettingsAdmin(admin.ModelAdmin):
-
-    inlines = [ImagenSliderInline]
-    
-    list_display = (
-        "default",
-        "email",
-        "phone",
-        "address",
-        )
-
-    fConfig = {"fields": (
-        ("nit","phone"),
-        ("email","address"),
-        )}
-
-    fSocial = {"fields": (
-        "twitter",
-        "facebook",
-        "instagram",
-        )}
-
-    fieldsets = (
-        ("", fConfig),
-        ("Social/Media", fSocial),
-        )
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-    
-    def has_add_permission(self, request):
-        return False if Settings.objects.exists() else True
-
-    readonly_fields=['default',]
-
-
-
-admin.site.register(Account, AccountAdmin)
-admin.site.register(Invoice, InvoiceAdmin)
-admin.site.register(Settings, SettingsAdmin)
-
-
+admin.site.register(model.Accounts, AccountAdmin)
+admin.site.register(Invoices, InvoiceAdmin)
+admin.site.register(Tour, ToursAdmin)
+admin.site.register(Lotteri, LotteriAdmin)
+admin.site.register(Schedule, ScheduleAdmin)
+admin.site.register(Advertisement, AdvertisementAdmin)
+admin.site.register(Marketing, MarketingAdmin)
+admin.site.register(Emails, EmailAdmin)
+admin.site.register(Informations, InformationAdmin)

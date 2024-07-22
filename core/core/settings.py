@@ -26,29 +26,48 @@ load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+BOLD_PUBLIC_KEY = os.getenv('BOLD_PUBLIC_KEY')
+BOLD_SECRET_KEY = os.getenv('BOLD_SECRET_KEY')
+
+GGRECAPTCHA_KEY = os.getenv('GGRECAPTCHA_KEY')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv('DEBUG') == "True" else False
 
 ALLOWED_HOSTS = ["*"]
+
 CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:8000',
+    'https://your-dev-domain.com',
+]
+
+
 
 # Logging File
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'core.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
+            'formatter': 'verbose',
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
+    'root': {
+        'handlers': ['file'],
+        'level': 'ERROR',
     },
 }
 
@@ -61,6 +80,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django_cron',
+    'django_ckeditor_5',
     'daphne',
     'django.contrib.staticfiles'
 ]
@@ -70,12 +90,15 @@ THIRD_APPS = [
     'rest_framework',
     'djoser',
     'rest_framework_simplejwt',
-    'channels'
+    'channels',
 ]
 
 CORE_APPS = [
+    'apps.site',
     'apps.core',
-    'apps.src'
+    'apps.src',
+    'apps.manager',
+    'apps.mail',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + CORE_APPS
@@ -123,7 +146,7 @@ CRON_CLASSES = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "pajoytours",
+        "NAME": "dbpajoytours",
         "USER": "postgres",
         "PASSWORD": "4oPn2655Lmn",
         "HOST": "localhost",
@@ -240,10 +263,118 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-AUTH_USER_MODEL = "core.Account"
+AUTH_USER_MODEL = "core.Accounts"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
+EMAIL_HOST_USER = 'noreply@email.com'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+customColorPalette = [
+        {
+            'color': 'hsl(4, 90%, 58%)',
+            'label': 'Red'
+        },
+        {
+            'color': 'hsl(340, 82%, 52%)',
+            'label': 'Pink'
+        },
+        {
+            'color': 'hsl(291, 64%, 42%)',
+            'label': 'Purple'
+        },
+        {
+            'color': 'hsl(262, 52%, 47%)',
+            'label': 'Deep Purple'
+        },
+        {
+            'color': 'hsl(231, 48%, 48%)',
+            'label': 'Indigo'
+        },
+        {
+            'color': 'hsl(207, 90%, 54%)',
+            'label': 'Blue'
+        },
+]
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+
+    },
+    'extends': {
+        'blockToolbar': [
+            'paragraph', 'heading1', 'heading2', 'heading3',
+            '|',
+            'bulletedList', 'numberedList',
+            '|',
+            'blockQuote',
+        ],
+        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+        'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
+                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
+                    'insertTable',],
+        'image': {
+            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
+                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side',  '|'],
+            'styles': [
+                'full',
+                'side',
+                'alignLeft',
+                'alignRight',
+                'alignCenter',
+            ]
+
+        },
+        'table': {
+            'contentToolbar': [ 'tableColumn', 'tableRow', 'mergeTableCells',
+            'tableProperties', 'tableCellProperties' ],
+            'tableProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            },
+            'tableCellProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            }
+        },
+        'heading' : {
+            'options': [
+                { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
+                { 'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1' },
+                { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
+                { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' }
+            ]
+        }
+    },
+    'list': {
+        'properties': {
+            'styles': 'true',
+            'startIndex': 'true',
+            'reversed': 'true',
+        }
+    }
+}
+
+
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    CORS_ALLOW_ALL_ORIGINS = False
+    ALLOWED_HOSTS = ['pajoytours.com', 'localhost', '127.0.0.1']
+    CORS_ALLOWED_ORIGINS = ['https://pajoytours.com','https://checkout.bold.co','https://payments.api.bold.co','https://confirmo.net','https://analytics.google.com']
+    CSRF_TRUSTED_ORIGINS = ['https://pajoytours.com','https://checkout.bold.co','https://payments.api.bold.co','https://confirmo.net','https://analytics.google.com']
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = 'smtp.hostinger.com'
+    EMAIL_PORT = 465
+    EMAIL_USE_SSL = True
+    EMAIL_HOST_USER = 'noreply@pajoytours.com'
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    MEDIA_URL = '/media/'
+    MEDIA_BASE = '/var/www/pajoytours'
+    MEDIA_ROOT = '/var/www/pajoytours/media/'

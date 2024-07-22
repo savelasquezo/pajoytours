@@ -4,12 +4,12 @@ import { NextResponse } from 'next/server';
 import { Carousel } from 'flowbite-react';
 import { imageLoader } from '@/utils/imageConfig';
 
-import { SessionInfo, ImagenSlider } from '@/lib/types/types';
+import { SessionInfo, ImagesInfo } from '@/lib/types/types';
 
 export const fetchImagenSliders = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_API_URL}/app/v1/core/fetch-sliders/`,
+      `${process.env.NEXT_PUBLIC_APP_API_URL}/app/v1/site/fetch-sliders/`,
       {
         method: 'GET',
         headers: {
@@ -29,7 +29,7 @@ export const fetchImagenSliders = async () => {
 
 const Slider: React.FC<SessionInfo> = ({ session }) => {
 
-  const [imagenSliders, setImagenSliders] = useState<ImagenSlider[]>([]);
+  const [imagenSliders, setImagenSliders] = useState<ImagesInfo[]>([]);
 
   useEffect(() => {
 

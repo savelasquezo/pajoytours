@@ -75,7 +75,7 @@ const Auth: React.FC<SessionInfo> = ({ session  }) => {
                     <GiTwoCoins/>
                     <p className='text-base'>$</p>
                   </button>
-                  <p className='text-gray-100'>{session?.user? (session.user.balance).toLocaleString() : "0"}</p>
+                  <p className='text-gray-100'>{session?.user?.balance ?? "0"}</p>
                 </div>
                 <button onClick={() => {signOut();}} className="bg-pink-700 hover:bg-pink-900 text-white uppercase text-xs font-semibold p-2 rounded transition-colors duration-300">Salir</button>
               </div>
@@ -87,7 +87,7 @@ const Auth: React.FC<SessionInfo> = ({ session  }) => {
             )}
             {showModal && (
             <div className={`fixed top-0 left-0 w-full h-full flex items-center justify-center transition bg-opacity-50 bg-gray-900 backdrop-blur-sm z-40 ${closingModal ? "animate-fade-out animate__animated animate__fadeOut" : "animate-fade-in animate__animated animate__fadeIn"}`}>
-                <div className="realtive w-4/5 md:w-3/5 lg:w-1/3 h-1/2 lg:h-3/5 xl:h-3/5 flex justify-start items-center rounded-2xl bg-gray-800 shadow-2xl">
+                <div className={`${activeTab === 'wallet' ? 'w-1/5 md:w-2/5 h-1/2 xl:h-2/5' : 'w-4/5 md:w-3/5 lg:w-1/3 h-1/2 lg:h-3/5 xl:h-3/5'} realtive flex justify-start items-center rounded-2xl bg-gray-800 shadow-2xl`}>
                   <div className="relative w-full h-full p-6">
                     <button onClick={closeModal} className='absolute top-4 right-4 text-xl text-gray-400 hover:text-gray-600 transition-colors duration-300' ><AiOutlineClose /></button>
                     <div className={`${activeTab !== 'wallet' ? 'block' : 'hidden'}`}>
@@ -101,7 +101,7 @@ const Auth: React.FC<SessionInfo> = ({ session  }) => {
                           )}
                       </div>
                     </div>
-                    <div style={{ display: activeTab === 'login' ? 'block' : 'none' }} className={`h-full my-4 ${activeTab === 'login' ? 'animate-fade-in animate__animated animate__fadeIn' : 'animate-fade-out animate__animated animate__fadeOut'} ${activeTab === 'singup' ? 'hidden' : ''}`}>
+                    <div className={`w-full h-full my-4  ${activeTab === 'login' ? 'block animate-fade-in animate__animated animate__fadeIn' : 'hidden animate-fade-out animate__animated animate__fadeOut'}`}>
                       <LoginModal closeModal={closeModal}/>
                       <div className="text-start items-center inline-flex gap-x-2">
                         <p className="text-xs text-gray-300">¿No tienes una cuenta?</p>
@@ -109,31 +109,31 @@ const Auth: React.FC<SessionInfo> = ({ session  }) => {
                       </div><br />
                       <button onClick={() => openModal('forgot-password')} className="hover:underline text-xs text-blue-500">¿Olvidaste la contraseña?</button>
                     </div>
-                    <div style={{ display: activeTab === 'singup' ? 'block' : 'none' }} className={`h-full my-4 ${activeTab === 'singup' ? 'animate-fade-in animate__animated animate__fadeIn' : 'animate-fade-out animate__animated animate__fadeOut'} ${activeTab === 'login' ? 'hidden' : ''}`}>
+                    <div className={`w-full h-full my-4 ${activeTab === 'singup' ? 'block animate-fade-in animate__animated animate__fadeIn' : 'hidden animate-fade-out animate__animated animate__fadeOut'}`}>
                       <RegisterModal closeModal={closeModal}/>
                       <div className="inline-flex gap-x-2 items-center">
                         <p className="text-xs text-gray-300">¿Ya tienes una cuenta?</p>
                         <button onClick={() => openModal('login')} className="cursor-pointer text-red-500 hover:text-pink-600 transition-colors duration-300 -mt-1">Ingresar</button>
                       </div>
                     </div>
-                    <div style={{ display: activeTab === 'forgot-password' ? 'block' : 'none' }} className={`h-full my-4 ${activeTab === 'forgot-password' ? 'animate-fade-in animate__animated animate__fadeIn' : 'animate-fade-out animate__animated animate__fadeOut'} ${activeTab === 'login' ? 'hidden' : ''}`}>
+                    <div className={`w-full h-full my-4 ${activeTab === 'forgot-password' ? 'block animate-fade-in animate__animated animate__fadeIn' : 'hidden animate-fade-out animate__animated animate__fadeOut'}`}>
                       <ForgotPasswordModal closeModal={closeModal}/>
                       <div className="inline-flex gap-x-2 items-center">
                         <p className="text-xs text-gray-300">¿Ya tienes una cuenta?</p>
                         <button onClick={() => openModal('login')} className="cursor-pointer text-red-500 hover:text-pink-600 transition-colors duration-300 -mt-1">Ingresar</button>
                       </div>
                     </div>
-                    <div style={{ display: activeTab === 'forgot_password_confirm' ? 'block' : 'none' }} className={`h-full my-4 ${activeTab === 'forgot_password_confirm' ? 'animate-fade-in animate__animated animate__fadeIn' : 'animate-fade-out animate__animated animate__fadeOut'} ${activeTab === 'login' ? 'hidden' : ''}`}>
+                    <div className={`w-full h-full my-4 ${activeTab === 'forgot_password_confirm' ? 'block animate-fade-in animate__animated animate__fadeIn' : 'hidden animate-fade-out animate__animated animate__fadeOut'}`}>
                       <ForgotPasswordConfirmModal closeModal={closeModal} updateForgotPasswordModalState={updateForgotPasswordModalState}/>
                       <div className="inline-flex gap-x-2 items-center">
                         <p className="text-xs text-gray-300">¿Ya tienes una cuenta?</p>
                         <button onClick={() => openModal('login')} className="cursor-pointer text-red-500 hover:text-pink-600 transition-colors duration-300 -mt-1">Ingresar</button>
                       </div>
                     </div>
-                    <div className={`h-full my-4 ${activeTab === 'wallet' ? 'block animate-fade-in animate__animated animate__fadeIn' : 'hidden animate-fade-out animate__animated animate__fadeOut'}`}>
+                    <div className={`w-full h-full my-4 ${activeTab === 'wallet' ? 'block animate-fade-in animate__animated animate__fadeIn' : 'hidden animate-fade-out animate__animated animate__fadeOut'}`}>
                       <AccountWallet />
                     </div>
-                    <div style={{ display: activeTab === 'auth' ? 'block' : 'none' }} className={`w-full h-full my-4 ${activeTab === 'auth' ? 'animate-fade-in animate__animated animate__fadeIn' : 'animate-fade-out animate__animated animate__fadeOut'}`}>
+                    <div className={`w-full h-full my-4 ${activeTab === 'auth' ? 'block animate-fade-in animate__animated animate__fadeIn' : 'hidden animate-fade-out animate__animated animate__fadeOut'}`}>
                       <AuthModal closeModal={closeModal} />
                     </div>
                   </div>

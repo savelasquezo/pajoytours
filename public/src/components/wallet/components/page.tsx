@@ -6,27 +6,27 @@ import { NextResponse } from 'next/server';
 import BeatLoader from 'react-spinners/BeatLoader';
 import BoldButton from '@/utils/buttonBold';
 
-import { SessionInfo } from '@/lib/types/types';
+import { SessionModal } from '@/lib/types/types';
 
 import { FiDollarSign } from "react-icons/fi";
 
 
-const WalletModal: React.FC<SessionInfo> = ({ session  }) => {
+const WalletModal: React.FC<SessionModal> = ({ closeModal, session  }) => {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
   
     const [invoice, setInvoice] = useState('');
-    const [copAmmount, setAmmount] = useState('');
+    const [amount, setAmount] = useState('');
     const [integritySignature, setIntegritySignature] = useState('');
     const [invoiceSuccess, setInvoiceSuccess] = useState(false);
   
     const [method, setMethod] = useState('');
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
   
-    const [formData, setFormData] = useState({amount: ''});
-    const {amount} = formData;
+    const [formData, setFormData] = useState({total: ''});
+    const {total} = formData;
   
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });
   
@@ -38,12 +38,13 @@ const WalletModal: React.FC<SessionInfo> = ({ session  }) => {
       setError('');
   
       await new Promise(resolve => setTimeout(resolve, 1500));
-      const amountPattern = /^[1-9][0-9]+$/;
-      if (!amountPattern.test(amount) || parseInt(amount, 0) >= 99999 || parseInt(amount, 0) <= 9) {
-        setError('¡Error - Ingrese un valor Valido entre 10 USD & 99999 USD!');
+      const totalPattern = /^[1-9][0-9]+$/;
+      if (!totalPattern.test(total) || parseInt(total, 0) < 10000 || parseInt(total, 0) > 20000000) {
+        setError('¡Error - Ingrese un valor Valido entre 10.000 COP & 20.000.000 COP!');
         setLoading(false);
         return;
       }
+      
   
       if (!method) {
         setError('¡Error - Seleccione un Metodo de Pago!');
@@ -52,7 +53,7 @@ const WalletModal: React.FC<SessionInfo> = ({ session  }) => {
       }
   
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API_URL}/app/user/request-invoice/`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APP_API_URL}/app/v1/src/request-invoice/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -60,7 +61,7 @@ const WalletModal: React.FC<SessionInfo> = ({ session  }) => {
           },
           body: JSON.stringify({    
             method,
-            amount,
+            total,
           }),
         });
         const data = await res.json();
@@ -70,7 +71,7 @@ const WalletModal: React.FC<SessionInfo> = ({ session  }) => {
           setMethod(method)
           setInvoice(data.apiInvoice);
           setIntegritySignature(data.integritySignature);
-          setAmmount(data.copAmmount);
+          setAmount(data.amount);
           setInvoiceSuccess(true);
         }
       } catch (error) {
@@ -82,11 +83,11 @@ const WalletModal: React.FC<SessionInfo> = ({ session  }) => {
 
   return (
     <div className="w-full h-full">
-      <div className='absolute top-4 inline-flex gap-x-1 w-full justify-start items-center z-0'>
-        <button className={`text-gray-100 rounded-sm px-2 py-1 inline-flex text-sm font-semibold transition duration-300 mr-2`}>Wallet</button>
-        <button className={`text-gray-100 rounded-sm px-2 py-1 inline-flex text-sm font-semibold transition duration-300 mr-2 `}>Historial</button>
-      </div>
-      <hr className='border-slate-700 shadow-inner mt-10'/>
+      <a href="/" className="flex items-start -mt-8">
+          <img src="assets/images/icon00.png" className="h-8 sm:h-10" alt="PJ" />
+          <span className="self-center ml-2 text-md font-poppins whitespace-nowrap dark:text-white">PajoyTours</span>
+      </a>
+      <hr className='border-slate-700 shadow-inner mt-4'/>
       <form className="h-full w-full text-gray-500 mt-4">
         <div className="flex flex-row bg-gray-900 rounded-md w-full justify-between items-center p-4">
           <div className="relative flex flex-row justify-between w-full">
@@ -100,11 +101,11 @@ const WalletModal: React.FC<SessionInfo> = ({ session  }) => {
                 <div className="absolute text-gray-500 text-lg top-2/4 left-2 grid h-5 w-5 -translate-y-2/4 items-center"><FiDollarSign/></div>
                 <input className="h-full w-full indent-4 text-gray-200 rounded-sm border border-gray-800 bg-transparent px-3 py-2 !pr-9 text-sm outline outline-0 transition-all focus:outline-0 disabled:border-0"
                     type="number"
-                    name="amount"
-                    value={amount}
+                    name="total"
+                    value={total}
                     onChange={(e) => onChange(e)}
-                    min="1"
-                    max="9999"
+                    min="10000"
+                    max="20000000"
                     pattern="[0-9]*"
                     required
                     readOnly={invoiceSuccess}
@@ -128,27 +129,22 @@ const WalletModal: React.FC<SessionInfo> = ({ session  }) => {
                   <p className='text-[0.55rem] text-justify text-gray-400'>Importante recordar que el saldo puede experimentar una breve demora antes de reflejarse en tu cuenta.
                     <span className='hidden md:inline'> Actualiza tu saldo desde tu wallet para obtener el estado actualizado de tus facturas</span>
                   </p>
-                  <p className='text-[0.60rem] text-gray-300 mt-2'>¿Necesitas Ayuda? support@zoexbet.com</p> 
+                  <p className='text-[0.60rem] text-gray-300 mt-2'>¿Necesitas Ayuda? support@pajoytours.com</p> 
                 </div>
               </div>
             )
           ) : (
             <div className="w-full h-full flex flex-col justify-center items-start gap-y-4">
               <div className="flex flex-row items-center justify-between w-full">
-                <div className={`${method === 'crypto' ? 'block' : 'hidden' }`}>
-                  <Link href={`https://confirmo.net/public/invoice/${invoice}`} target="_blank" rel="noopener noreferrer">
-                    <Image width={192} height={128} src={"/assets/images/crypto0.webp"} className="object-fit w-40 h-8 md:w-52 md:h-12 shadow-lg rounded-full" alt="" />
-                  </Link>
-                </div>
                 <div className={`${method === 'bold' ? 'block' : 'hidden' }`}>
-                    <BoldButton invoice={invoice} amount={copAmmount} integritySignature={integritySignature}/>
+                    <BoldButton invoice={invoice} amount={amount} integritySignature={integritySignature}/>
                 </div>
                 <span className="bg-gray-900 flex items-center justify-center text-xs md:text-base rounded-sm py-2 px-4 text-white h-8 md:h-10 -mt-1">{invoice}</span>
               </div>
               <div className='text-[0.55rem] text-justify text-gray-400'>
-                <p>Importante tener en cuenta que la actualización de tu saldo puede experimentar una breve demora antes de reflejarse en tu cuenta. ¿Necesitas Ayuda? support@zoexbet.com</p> 
+                <p>Importante tener en cuenta que la actualización de tu saldo puede experimentar una breve demora antes de reflejarse en tu cuenta. ¿Necesitas Ayuda? support@pajoytours.com</p> 
               </div>
-              <p className='text-[0.60rem] text-gray-300 -mt-2 -lg:mt-4'>¿Necesitas Ayuda? support@zoexbet.com</p> 
+              <p className='text-[0.60rem] text-gray-300 -mt-2 -lg:mt-4'>¿Necesitas Ayuda? support@pajoytours.com</p> 
             </div>
           )}
         </div>
