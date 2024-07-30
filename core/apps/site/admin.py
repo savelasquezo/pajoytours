@@ -46,9 +46,7 @@ class InformationAdmin(admin.ModelAdmin):
         )}
 
     fSocial = {"fields": (
-        "twitter",
-        "facebook",
-        "instagram",
+        ("twitter","facebook","instagram"),
         )}
 
     fLegal = {"fields": (
@@ -56,11 +54,16 @@ class InformationAdmin(admin.ModelAdmin):
         "legal",
         )}
 
+    fTemplate = {"fields": (
+        ("image1","image2"),
+        )}
+
     fieldsets = (
         ("", fConfig),
         ("Templates", fTemplates),
         ("Social/Media", fSocial),
         ("Terms/Legal", fLegal),
+        ("Template", fTemplate),
         )
 
 

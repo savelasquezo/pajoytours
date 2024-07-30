@@ -28,3 +28,15 @@ class InformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = model.Informations
         fields = '__all__'
+
+    image1 = serializers.SerializerMethodField()
+    def get_image1(self, obj):
+        if obj.image1:
+            return obj.image1.url.lstrip('')
+        return None
+
+    image2 = serializers.SerializerMethodField()
+    def get_image2(self, obj):
+        if obj.image2:
+            return obj.image2.url.lstrip('')
+        return None

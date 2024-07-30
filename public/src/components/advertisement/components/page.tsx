@@ -27,7 +27,7 @@ const Advertisement: React.FC<SessionInfo> = () => {
         <a href="#"></a>
         <div className="relative">
           <a href="#">
-            <img className="w-auto h-full bg-contain" src={ad.banner} alt={ad.name} />
+            <img className="w-full h-full bg-contain max-h-[30rem]" src={ad.banner} alt={ad.name} />
             <div className="absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-10"></div>
           </a>
           <a href="#!">
@@ -36,7 +36,7 @@ const Advertisement: React.FC<SessionInfo> = () => {
             </div>
           </a>
         </div>
-        <div className="px-6 py-4 h-28 overflow-hidden flex-grow">
+        <div className="px-6 py-4 h-28 overflow-hidden flex-grow bg-white">
           <p className="font-medium text-ellipsis text-sm lg:text-base text-gray-700 mb-2">
             {ad.description}
           </p>

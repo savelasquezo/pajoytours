@@ -39,7 +39,7 @@ const Header: React.FC<SessionInfo> = ({ session }) => {
                             )}
                         </button>
                     </div>
-                    <div className={`${isMobileMenuOpen ? 'block' : 'hidden'} justify-between items-center w-full lg:flex lg:w-auto lg:order-1 z-50 bg-gray-800 lg:bg-transparent rounded-b-xl`} id="mobile-menu-2">
+                    <div className={`${isMobileMenuOpen ? 'block' : 'hidden'} justify-between items-center w-full lg:flex lg:-mt-1 lg:w-auto lg:order-1 z-50 bg-gray-800 lg:bg-transparent rounded-b-xl`} id="mobile-menu-2">
                         <ul className="flex h-12 lg:h-auto px-12 lg:p-2 flex-row justify-between items-center font-medium space-x-1 lg:space-x-8 lg:mt-0 text-xs lg:text-base">
                             <li><a href="/gallery?type=all" className="block py-2 border-b lg:border-0 g:p-0 text-gray-400 lg:hover:text-white hover:text-white lg:hover:bg-transparent border-gray-800">Tours</a></li>
                             <li><a href="/schedule" className="block py-2 border-b lg:border-0 g:p-0 text-gray-400 lg:hover:text-white hover:text-white lg:hover:bg-transparent border-gray-800">Calendario</a></li>

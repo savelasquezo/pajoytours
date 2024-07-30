@@ -10,4 +10,3 @@ urlpatterns = [
     path('request-ticketlotteri/', view.requestTicketLotteri.as_view(), name='request-ticketlotteri'),
     re_path(r'fetch-lotteri-tickets/(?P<lotteri>\d+)', view.fetchTicketsLotteri.as_view(), name='fetch-lotteri-tickets'),
 ]
-

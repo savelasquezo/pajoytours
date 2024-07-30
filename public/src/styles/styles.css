@@ -41,6 +41,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'ComicNeueSansID';
+  src: url('/fonts/ComicNeueSansID.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 @layer utilities {
   .text-balance {
@@ -68,4 +75,14 @@ input[type=number] {
 
 .whatsapp_widget_icon {
   border: none !important;
+}
+
+.mask-image {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
 }

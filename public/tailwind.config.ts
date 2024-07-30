@@ -15,10 +15,11 @@ const config: Config = {
         roboto: ['Roboto', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
         courier: ['Courier', 'sans-serif'],
-        poppins: ['Poppins', 'sans-serif']
+        poppins: ['Poppins', 'sans-serif'],
+        comicsanseu: ['ComicNeueSansID', 'sans-serif'],
       },
       backgroundImage: {
-        'background-image01': "url('/assets/demo/background0.jpeg')",
+        'background-image01': "url('/assets/demo/background01.webp')",
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },

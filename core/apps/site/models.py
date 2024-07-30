@@ -41,6 +41,13 @@ class Informations(models.Model):
     file = models.FileField(upload_to=FilesUploadTo, max_length=512, null=True, blank=True,
                             help_text="Archivo/Catalogo Empresarial")
     
+    
+    image1 = models.ImageField(_("Imagen"), upload_to=ImagesUploadTo, max_length=512, null=True, blank=True,
+                              help_text="Width-(1200px) - Height-(900px)")
+
+    image2 = models.ImageField(_("Imagen"), upload_to=ImagesUploadTo, max_length=512, null=True, blank=True,
+                              help_text="Width-(1340px) - Height-(500px)")
+    
     template_tour = models.FileField(upload_to=TemplatesUploadTo, max_length=512, null=True, blank=True,help_text="Template for Tours")
     template_lotteri = models.FileField(upload_to=TemplatesUploadTo, max_length=512, null=True, blank=True,help_text="Template for Lotteri")
 
