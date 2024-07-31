@@ -24,6 +24,7 @@ urlpatterns = [
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     path("app/auth/", include("djoser.urls")),
     path("app/auth/", include("djoser.urls.jwt")),
+    path("app/v1/core/", include("apps.core.urls")),
     path("app/v1/site/", include("apps.site.urls")),
     path("app/v1/mail/", include("apps.mail.urls")),
     path("app/v1/src/", include("apps.src.urls")),
