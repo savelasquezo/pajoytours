@@ -366,8 +366,8 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CORS_ALLOW_ALL_ORIGINS = False
     ALLOWED_HOSTS = ['pajoytours.com', 'localhost', '127.0.0.1']
-    CORS_ALLOWED_ORIGINS = ['https://pajoytours.com','https://checkout.bold.co','https://payments.api.bold.co','https://confirmo.net','https://analytics.google.com']
-    CSRF_TRUSTED_ORIGINS = ['https://pajoytours.com','https://checkout.bold.co','https://payments.api.bold.co','https://confirmo.net','https://analytics.google.com']
+    CORS_ALLOWED_ORIGINS = ['https://pajoytours.com','wss://pajoytours.com','https://checkout.bold.co','https://payments.api.bold.co','https://analytics.google.com']
+    CSRF_TRUSTED_ORIGINS = ['https://pajoytours.com','wss://pajoytours.com','https://checkout.bold.co','https://payments.api.bold.co','https://analytics.google.com']
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     EMAIL_HOST = 'smtp.hostinger.com'
     EMAIL_PORT = 465
