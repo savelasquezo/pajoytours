@@ -158,7 +158,7 @@ class AdvertisementAdmin(admin.ModelAdmin):
     ordering = ['date',]
 
     fScheduleInfo = {'fields': (
-        ('uuid','name','is_active'),
+        ('name','is_active'),
         ('banner','date'),
         ('description'),
     )}

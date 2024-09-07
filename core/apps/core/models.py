@@ -27,7 +27,7 @@ class Accounts(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("Email"),unique=True)
     phone = models.CharField(_("Telefono"),max_length=64, unique=True, null=False, blank=False)
     location = models.CharField(_("Ubicacion"),max_length=256, null=True, blank=True)
-    balance = models.FloatField(_("Balance"),default=0, null=True, blank=True, help_text="Saldo Disponible $USD")
+    balance = models.FloatField(_("Saldo"),default=0, null=True, blank=True, help_text="Saldo Disponible $COP")
     date_joined = models.DateField(_("Fecha"),default=timezone.now)
     last_joined = models.DateField(_("Ultimo Ingreso"),default=timezone.now)
     frame = models.CharField(_("Avatar"),default=0,max_length=2, null=True, blank=True)

@@ -14,7 +14,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="es">
       <head>
-      <Script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBZqamFufskOr-UaOf5WEEVHf21cgqnk7E`} strategy="beforeInteractive"/>
+      <Script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBZqamFufskOr-UaOf5WEEVHf21cgqnk7E`} strategy="lazyOnload"/>
       </head>
       <body className={inter.className}>
           {children}

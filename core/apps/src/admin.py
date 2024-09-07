@@ -43,7 +43,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     
     fieldsets = (
         (None, {'fields': (
-            ('uui','account','method','state'),
+            ('account','method','state'),
             ('amount','date','voucher'),
         )}),
     )
