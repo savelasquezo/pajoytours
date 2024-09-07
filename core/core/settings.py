@@ -34,17 +34,17 @@ GGRECAPTCHA_KEY = os.getenv('GGRECAPTCHA_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv('DEBUG') == "True" else False
 
+# CorsHeaders
 ALLOWED_HOSTS = ["*"]
-
 CORS_ALLOW_ALL_ORIGINS = True
 
-CSRF_COOKIE_SECURE = False
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:8000',
-]
+CORS_DEBUG = True
+DEBUG_PROPAGATE_EXCEPTIONS = True
+CORS_ALLOW_REQUESTS_FROM_NO_REFERER = True
 
-
+# Logging File
+if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
+    os.makedirs(os.path.join(BASE_DIR, 'logs'))
 
 # Logging File
 LOGGING = {
