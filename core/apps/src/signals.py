@@ -10,7 +10,6 @@ def updateInvoices(sender, instance, **kwargs):
     obj = model.Invoices.objects.filter(pk=instance.pk).first()
     if obj and not kwargs.get('created', False):
         if obj.state != "done" and instance.state == "done":
-            print("Actualizo")
             try:
                 user = instance.account
                 amount = instance.amount
